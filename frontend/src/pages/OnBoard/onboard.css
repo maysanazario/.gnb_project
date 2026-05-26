@@ -1,0 +1,269 @@
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.screen {
+  min-height: 100vh;
+  background: #111119;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Outfit', 'Segoe UI', sans-serif;
+  color: #e2e0f0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorações */
+.deco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.deco svg { width: 100%; height: 100%; }
+
+/* Logo */
+.logo-area {
+  position: relative;
+  z-index: 1;
+  padding-top: 52px;
+  margin-bottom: 44px;
+  text-align: center;
+}
+
+.logo-img {
+  width: 120px;
+  object-fit: contain;
+}
+
+/* Card */
+.card {
+  position: relative;
+  z-index: 1;
+  background: #1c1b2b;
+  border-radius: 65px 65px 0 0;
+  width: 100%;
+  flex: 1;
+  padding: 36px 28px 48px;
+}
+
+.income-note {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  background: #181827;
+  border-radius: 0 20px 20px 0;
+
+  padding: 18px 20px;
+  margin-bottom: 40px;
+
+  font-size: 14px;
+  color: #7d7a99;
+  line-height: 1.5;
+  text-align: left;
+
+  position: relative;
+  overflow: hidden;
+}
+
+.income-note::before {
+  content: "";
+  width: 10px;
+  height: 100%;
+  background: linear-gradient(180deg, #8b5cf6, #7c3aed);
+
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.income-note br {
+  display: none;
+}
+
+.income-card {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Título */
+.income-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #dddaf0;
+  letter-spacing: -0.5px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* Descrição */
+.income-description {
+  font-size: 14px;
+  color: #8a87a8;
+  text-align: center;
+  line-height: 1.5;
+  margin-bottom: 40px;
+}
+
+/* Input de renda */
+.income-input-section {
+  margin-bottom: 32px;
+}
+
+.income-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  color: #6b678e;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.currency-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: 1.5px solid #7c4fd4;
+  border-radius: 16px;
+  padding: 16px 20px;
+  transition: border-color .2s;
+}
+
+.currency-input-wrap:focus-within {
+  border-color: #a78bfa;
+}
+
+.currency-symbol {
+  font-size: 28px;
+  font-weight: 600;
+  color: #a78bfa;
+  margin-right: 12px;
+}
+
+.currency-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  font-weight: 600;
+  color: #c4c0e0;
+  outline: none;
+  font-family: inherit;
+}
+
+.currency-input::placeholder {
+  color: #38364f;
+  font-size: 28px;
+}
+
+/* Valores comuns */
+.common-values {
+  margin-bottom: 32px;
+}
+
+.common-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  color: #6b678e;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.value-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.value-btn {
+  background: transparent;
+  border: 1.5px solid #2e2b45;
+  border-radius: 40px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #c4c0e0;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.value-btn:hover {
+  border-color: #7c4fd4;
+  background: rgba(124, 79, 212, 0.1);
+}
+
+.value-btn.active {
+  border-color: #a78bfa;
+  background: linear-gradient(135deg, rgba(191, 127, 255, 0.2), rgba(129, 140, 248, 0.2));
+  color: #e2e0f0;
+}
+
+/* Nota */
+.income-note {
+  font-size: 12px;
+  color: #6b678e;
+  text-align: center;
+  line-height: 1.5;
+  margin-bottom: 40px;
+}
+
+/* Botão continuar */
+.btn-continuar {
+  width: 100%;
+  background: #6d28d9;
+  border: none;
+  border-radius: 50px;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background .2s, transform .1s;
+}
+
+.btn-continuar:hover { 
+  background: #5b21b6; 
+}
+
+.btn-continuar:active { 
+  transform: scale(.98); 
+}
+
+.btn-continuar svg { 
+  width: 20px; 
+  height: 20px; 
+}
+
+/* Desktop */
+@media (min-width: 640px) {
+  .screen { 
+    justify-content: center; 
+    padding: 40px 16px; 
+  }
+  
+  .logo-area { 
+    padding-top: 0; 
+    margin-bottom: 32px; 
+  }
+  
+  .card {
+    border-radius: 28px;
+    max-width: 420px;
+    flex: none;
+    padding: 44px 40px;
+  }
+  
+  .income-title {
+    font-size: 22px;
+  }
+}

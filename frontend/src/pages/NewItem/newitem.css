@@ -1,0 +1,375 @@
+/* ─────────────────────────────────────────
+   newitem.css — mobile-first, responsive
+   ───────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── root ── */
+.ni-root {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #0f0d1a;
+  min-height: 100dvh;
+  position: relative;
+  overflow-x: hidden;
+  color: #fff;
+}
+
+/* ── decorações geométricas ── */
+.ni-deco {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ni-deco__dot {
+  position: absolute;
+  top: 14px;
+  right: 52px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(120, 80, 220, 0.55);
+}
+
+.ni-deco__diamond {
+  position: absolute;
+  top: 52px;
+  right: 20px;
+  width: 20px;
+  height: 20px;
+  background: rgba(100, 50, 200, 0.35);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.ni-deco__diamond--sm {
+  top: 28px;
+  right: 10px;
+  width: 10px;
+  height: 10px;
+  background: rgba(130, 80, 230, 0.3);
+}
+
+/* ── shell / container ── */
+.ni-shell {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 0 48px;
+}
+
+/* ── header ── */
+.ni-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 40px 20px 24px;
+}
+
+.ni-header__back {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: background 0.15s;
+}
+
+.ni-header__back:hover { background: rgba(255, 255, 255, 0.13); }
+
+.ni-header__back svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+}
+
+.ni-header__title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.3px;
+}
+
+/* ── form ── */
+.ni-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 0 20px;
+}
+
+/* ── group ── */
+.ni-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ── label ── */
+.ni-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #ccc;
+  letter-spacing: 0.01em;
+}
+
+/* ── input base ── */
+.ni-input {
+  width: 100%;
+  background: #1a1730;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 15px;
+  color: #fff;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.15s, background 0.15s;
+  -webkit-appearance: none;
+}
+
+.ni-input::placeholder { color: #555; }
+
+.ni-input:focus {
+  border-color: rgba(124, 58, 237, 0.5);
+  background: #1f1c3a;
+}
+
+/* ── preço ── */
+.ni-price-wrap {
+  position: relative;
+  background: #1a1730;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.ni-price-wrap:focus-within {
+  border-color: rgba(124, 58, 237, 0.5);
+  background: #1f1c3a;
+}
+
+.ni-price-prefix {
+  font-size: 15px;
+  color: #555;
+  flex-shrink: 0;
+  margin-right: 6px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.ni-price-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  color: #fff;
+  font-family: inherit;
+  min-width: 0;
+}
+
+.ni-price-input::placeholder { color: #555; }
+
+/* ── chips (categoria) ── */
+.ni-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ni-chip {
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #bbb;
+  font-family: inherit;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.ni-chip:hover:not(.ni-chip--active) {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ddd;
+}
+
+.ni-chip--active {
+  background: #7c3aed;
+  border-color: #7c3aed;
+  color: #fff;
+}
+
+/* ── prioridade ── */
+.ni-priority-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.ni-priority-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 8px;
+  border-radius: 12px;
+  background: #1a1730;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.ni-priority-card:hover:not(.ni-priority-card--active) {
+  background: #1f1c3a;
+}
+
+.ni-priority-card--active {
+  border-color: var(--border-color, #7c3aed);
+  background: var(--bg-color, rgba(255, 255, 255, 0.04));
+}
+
+.ni-priority-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: background 0.15s, opacity 0.15s;
+  opacity: 0.4;
+}
+
+.ni-priority-card--active .ni-priority-dot {
+  opacity: 1;
+}
+
+.ni-priority-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #ccc;
+}
+
+/* ── textarea ── */
+.ni-textarea {
+  width: 100%;
+  background: #1a1730;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 15px;
+  color: #fff;
+  outline: none;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 90px;
+  transition: border-color 0.15s, background 0.15s;
+  -webkit-appearance: none;
+}
+
+.ni-textarea::placeholder { color: #555; }
+
+.ni-textarea:focus {
+  border-color: rgba(124, 58, 237, 0.5);
+  background: #1f1c3a;
+}
+
+/* ── botão salvar ── */
+.ni-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  background: #7c3aed;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  margin-top: 4px;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+  transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+}
+
+.ni-submit:hover {
+  background: #6d28d9;
+  box-shadow: 0 6px 24px rgba(124, 58, 237, 0.55);
+}
+
+.ni-submit:active { transform: scale(0.97); }
+
+.ni-submit svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+}
+
+/* ─────────────────────────────────────────
+   RESPONSIVO
+   ───────────────────────────────────────── */
+@media (min-width: 640px) {
+  .ni-shell {
+    max-width: 560px;
+    padding-bottom: 64px;
+  }
+
+  .ni-header {
+    padding-top: 52px;
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+
+  .ni-header__title { font-size: 28px; }
+
+  .ni-form {
+    padding: 0 28px;
+    gap: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .ni-shell {
+    max-width: 680px;
+  }
+
+  .ni-header {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .ni-form {
+    padding: 0 32px;
+  }
+
+  .ni-priority-row {
+    gap: 14px;
+  }
+
+  .ni-priority-card {
+    padding: 20px 8px;
+  }
+}

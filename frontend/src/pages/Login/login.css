@@ -1,0 +1,176 @@
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.screen {
+  min-height: 100vh;
+  background: #111119;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Outfit', 'Segoe UI', sans-serif;
+  color: #e2e0f0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorações */
+.deco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.deco svg { width: 100%; height: 100%; }
+
+/* Logo */
+.logo-area {
+  position: relative;
+  z-index: 1;
+  padding-top: 52px;
+  margin-bottom: 44px;
+  text-align: center;
+}
+.logo {
+  font-size: 48px;
+  font-weight: 800;
+  letter-spacing: -2px;
+  background: linear-gradient(135deg, #bf7fff 0%, #818cf8 50%, #6ee7ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.logo-img {
+  width: 120px;
+  object-fit: contain;
+}
+
+/* Card */
+.card {
+  position: relative;
+  z-index: 1;
+  background: #1c1b2b;
+  border-radius: 65px 0 0 0;
+  width: 100%;
+  flex: 1;
+  padding: 36px 28px 48px;
+}
+
+h1 {
+  font-size: 32px;
+  font-weight: 400;
+  color: #dddaf0;
+  letter-spacing: -0.5px;
+  margin-bottom: 32px;
+}
+
+/* Labels */
+.label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  color: #6b678e;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+/* Inputs */
+.input-wrap { position: relative; margin-bottom: 28px; }
+
+.input-wrap input {
+  width: 100%;
+  background: transparent;
+  border-radius: 12px;
+  padding: 15px 18px;
+  font-size: 15px;
+  font-family: inherit;
+  color: #c4c0e0;
+  outline: none;
+  transition: border-color .2s;
+}
+
+.input-email input { border: 1.5px solid #2e2b45; }
+.input-email input:focus { border-color: #a78bfa; }
+
+.input-pass input { border: 1.5px solid #2e2b45; padding-right: 52px; }
+.input-pass input:focus { border-color: #7c4fd4; }
+
+input::placeholder { color: #38364f; }
+
+/* Olho */
+.eye-btn {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #55527a;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  transition: color .2s;
+}
+.eye-btn:hover { color: #a78bfa; }
+.eye-btn svg { width: 20px; height: 20px; }
+
+/* Esqueci senha */
+.forgot { text-align: right; margin-top: -16px; margin-bottom: 40px; }
+.forgot a { color: #a78bfa; font-size: 14px; text-decoration: none; transition: color .2s; }
+.forgot a:hover { color: #c4b5fd; }
+
+/* Botão */
+.btn-entrar {
+  width: 100%;
+  background: #6d28d9;
+  border: none;
+  border-radius: 50px;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background .2s, transform .1s;
+}
+.btn-entrar:hover { background: #5b21b6; }
+.btn-entrar:active { transform: scale(.98); }
+.btn-entrar svg { width: 20px; height: 20px; }
+
+/* Cadastre-se */
+.signup { text-align: center; margin-top: 48px; font-size: 14.5px; color: #4a4768; }
+.signup a { color: #a78bfa; text-decoration: none; transition: color .2s; }
+.signup a:hover { color: #c4b5fd; }
+
+.link-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #a78bfa;
+  font-size: 14px;
+  font-family: inherit;
+  text-decoration: none;
+  transition: color .2s;
+  padding: 0;
+}
+
+.link-button:hover { 
+  color: #c4b5fd; 
+}
+
+/* Desktop */
+@media (min-width: 640px) {
+  .screen { justify-content: center; padding: 40px 16px; }
+  .logo-area { padding-top: 0; margin-bottom: 32px; }
+  .card {
+    border-radius: 28px;
+    max-width: 420px;
+    flex: none;
+    padding: 44px 40px;
+  }
+}
