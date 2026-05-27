@@ -1,0 +1,299 @@
+/* ============================================================
+   Reports — mesmo tema dark/purple do Dashboard
+   ============================================================ */
+
+:root {
+  --rp-bg:           #0f0d1a;
+  --rp-card:         #1a1730;
+  --rp-card2:        #211e38;
+  --rp-purple:       #7c4dff;
+  --rp-purple-light: #9e74ff;
+  --rp-purple-dim:   rgba(124, 77, 255, 0.18);
+  --rp-purple-glow:  rgba(124, 77, 255, 0.35);
+  --rp-text:         #ffffff;
+  --rp-muted:        #a09cc0;
+  --rp-border:       rgba(255, 255, 255, 0.07);
+  --rp-radius:       20px;
+  --rp-radius-sm:    14px;
+  --rp-transition:   0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Root + animação de entrada ── */
+.rp-root {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--rp-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 0 20px 48px;
+  font-family: 'Nunito', 'Segoe UI', sans-serif;
+  color: var(--rp-text);
+  overflow-x: hidden;
+
+  /* estado inicial antes de montar */
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rp-root--in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Glow ── */
+.rp-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(100px);
+  opacity: 0.35;
+  z-index: 0;
+}
+.rp-glow--top {
+  top: -80px; right: -60px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, #7c4dff 0%, transparent 70%);
+}
+
+/* ── Header ── */
+.rp-header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 52px;
+}
+
+.rp-back-btn {
+  width: 40px; height: 40px;
+  background: var(--rp-card);
+  border: 1px solid var(--rp-border);
+  border-radius: 12px;
+  color: var(--rp-text);
+  font-size: 24px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: var(--rp-transition);
+}
+.rp-back-btn:hover { background: var(--rp-card2); }
+
+.rp-title {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -0.3px;
+}
+
+/* ── Filtros de período ── */
+.rp-periods {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.rp-period-btn {
+  padding: 9px 22px;
+  border-radius: 30px;
+  border: 1px solid var(--rp-border);
+  background: transparent;
+  color: var(--rp-muted);
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: var(--rp-transition);
+}
+.rp-period-btn:hover { border-color: var(--rp-purple); color: var(--rp-text); }
+
+.rp-period-btn--active {
+  background: var(--rp-purple);
+  border-color: var(--rp-purple);
+  color: #fff;
+  box-shadow: 0 4px 16px var(--rp-purple-glow);
+}
+
+/* ── Card do gráfico ── */
+.rp-chart-card {
+  position: relative;
+  z-index: 1;
+  background: var(--rp-card);
+  border: 1px solid var(--rp-border);
+  border-radius: var(--rp-radius);
+  padding: 24px 20px 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease 0.1s, transform 0.4s cubic-bezier(0.4,0,0.2,1) 0.1s;
+}
+.rp-chart-card--in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.rp-chart-label {
+  font-size: 12px;
+  color: var(--rp-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.rp-chart-total {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  margin-bottom: 20px;
+}
+
+/* ── Barras ── */
+.rp-bars {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  height: 130px;
+}
+
+.rp-bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+  cursor: pointer;
+}
+
+.rp-bar-track {
+  flex: 1;
+  width: 100%;
+  background: var(--rp-card2);
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.rp-bar-fill {
+  width: 100%;
+  height: 0;
+  background: var(--rp-purple-dim);
+  border-radius: 8px;
+  transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1), background 0.25s ease;
+  animation: bar-grow 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation-delay: var(--bar-delay, 0ms);
+}
+
+@keyframes bar-grow {
+  from { height: 0; }
+  to   { height: var(--h); }
+}
+
+.rp-bar-fill {
+  height: var(--h);
+}
+
+.rp-bar-fill--active {
+  background: var(--rp-purple);
+  box-shadow: 0 0 16px var(--rp-purple-glow);
+}
+
+.rp-bar-day {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--rp-muted);
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+.rp-bar-day--active { color: var(--rp-purple-light); }
+
+/* ── Seção de categorias ── */
+.rp-section {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease 0.2s, transform 0.4s cubic-bezier(0.4,0,0.2,1) 0.2s;
+}
+.rp-section--in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.rp-section-title {
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.rp-cat-card {
+  background: var(--rp-card);
+  border: 1px solid var(--rp-border);
+  border-radius: var(--rp-radius);
+  padding: 8px 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+
+.rp-cat-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 4px;
+  cursor: pointer;
+  border-radius: var(--rp-radius-sm);
+  transition: var(--rp-transition);
+}
+.rp-cat-item:hover { background: rgba(255,255,255,0.03); padding-left: 8px; }
+
+.rp-cat-icon {
+  width: 38px; height: 38px;
+  background: var(--rp-purple-dim);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+
+.rp-cat-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.rp-cat-name { font-size: 14px; font-weight: 700; }
+.rp-cat-val  { font-size: 13px; font-weight: 800; color: var(--rp-purple-light); }
+
+.rp-divider { height: 1px; background: var(--rp-border); }
+.rp-chevron { color: var(--rp-muted); font-size: 20px; }
+
+/* ── Responsivo desktop ── */
+@media (min-width: 768px) {
+  .rp-root {
+    max-width: 560px;
+    border-radius: 24px;
+    margin: 40px auto;
+    min-height: auto;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+  }
+  .rp-header { padding-top: 36px; }
+}
+
+@media (max-width: 360px) {
+  .rp-root { padding: 0 14px 40px; gap: 18px; }
+  .rp-header { padding-top: 36px; }
+  .rp-period-btn { padding: 8px 14px; font-size: 13px; }
+  .rp-chart-total { font-size: 24px; }
+}
