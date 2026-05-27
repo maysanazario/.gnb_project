@@ -1,0 +1,445 @@
+/* ─────────────────────────────────────────
+   dashboard.css — mobile-first, responsive
+   ───────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── root ── */
+.db-root {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #0a0914;
+  min-height: 100dvh;
+  position: relative;
+  overflow-x: hidden;
+  color: #fff;
+}
+
+/* ── decorações de fundo ── */
+.db-deco {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.db-deco__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+}
+
+.db-deco__orb--1 {
+  width: 350px;
+  height: 350px;
+  top: -120px;
+  right: -100px;
+  background: rgba(109, 40, 217, 0.15);
+}
+
+.db-deco__orb--2 {
+  width: 250px;
+  height: 250px;
+  top: 80px;
+  right: -80px;
+  background: rgba(124, 58, 237, 0.08);
+}
+
+/* ── shell / container ── */
+.db-shell {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ── header / saudação ── */
+.db-header {
+  padding-top: 52px;
+  padding-bottom: 28px;
+}
+
+.db-header__user {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.db-header__avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4c3a8a, #6d52e0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  color: #a78bfa;
+}
+
+.db-header__avatar svg {
+  width: 22px;
+  height: 22px;
+}
+
+.db-header__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.db-header__greeting {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.db-header__hello {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.db-header__welcome {
+  font-size: 12px;
+  color: #6b678e;
+}
+
+/* ── saldo total ── */
+.db-balance {
+  margin-bottom: 32px;
+}
+
+.db-balance__label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b678e;
+  margin-bottom: 8px;
+}
+
+.db-balance__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.db-balance__amount {
+  font-size: 34px;
+  font-weight: 300;
+  color: #fff;
+  letter-spacing: -1px;
+  line-height: 1.1;
+}
+
+.db-balance__toggle {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b678e;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.db-balance__toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #a78bfa;
+}
+
+.db-balance__toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+.db-balance__variation {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.db-balance__trend-icon {
+  color: #7c3aed;
+  display: flex;
+  align-items: center;
+}
+
+.db-balance__trend-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.db-balance__trend-text {
+  font-size: 12px;
+  color: #7c3aed;
+  font-weight: 500;
+}
+
+/* ── seções ── */
+.db-section {
+  margin-bottom: 28px;
+}
+
+.db-section__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 14px;
+}
+
+/* ── card de resumo ── */
+.db-summary-card {
+  background: #141226;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 20px;
+  padding: 8px 0;
+  overflow: hidden;
+}
+
+.db-summary-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  text-align: left;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.db-summary-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.db-summary-row__left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+.db-summary-row__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.db-summary-row__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.db-summary-row__icon--income {
+  background: rgba(124, 58, 237, 0.15);
+  color: #a78bfa;
+}
+
+.db-summary-row__icon--expense {
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+}
+
+.db-summary-row__icon--balance {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+}
+
+.db-summary-row__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.db-summary-row__label {
+  font-size: 13px;
+  color: #6b678e;
+  font-weight: 500;
+}
+
+.db-summary-row__value {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.db-summary-row__value--income {
+  color: #a78bfa;
+}
+
+.db-summary-row__value--expense {
+  color: #f87171;
+}
+
+.db-summary-row__value--balance {
+  color: #34d399;
+}
+
+.db-summary-row__arrow {
+  color: #3a3655;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.db-summary-row__arrow svg {
+  width: 18px;
+  height: 18px;
+}
+
+.db-summary-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.04);
+  margin: 0 18px;
+}
+
+/* ── card de despesas ── */
+.db-expenses-card {
+  background: #141226;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 20px;
+  padding: 8px 0;
+  overflow: hidden;
+}
+
+.db-expense-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  text-align: left;
+  font-family: inherit;
+  position: relative;
+  transition: background 0.15s;
+}
+
+.db-expense-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.db-expense-row__left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+.db-expense-row__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(124, 58, 237, 0.12);
+  color: #a78bfa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.db-expense-row__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.db-expense-row__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.db-expense-row__name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.db-expense-row__amount {
+  font-size: 12px;
+  font-weight: 600;
+  color: #a78bfa;
+}
+
+.db-expense-row__arrow {
+  color: #3a3655;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.db-expense-row__arrow svg {
+  width: 18px;
+  height: 18px;
+}
+
+.db-expense-divider {
+  position: absolute;
+  bottom: 0;
+  left: 72px;
+  right: 18px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* ── spacer para bottom nav ── */
+.db-spacer {
+  height: 100px;
+}
+
+/* ─────────────────────────────────────────
+   RESPONSIVO
+   ───────────────────────────────────────── */
+@media (min-width: 640px) {
+  .db-shell {
+    max-width: 560px;
+    padding: 0 28px;
+  }
+
+  .db-header {
+    padding-top: 56px;
+  }
+
+  .db-balance__amount {
+    font-size: 40px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .db-shell {
+    max-width: 640px;
+  }
+}

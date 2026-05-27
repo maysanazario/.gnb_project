@@ -1,0 +1,136 @@
+/* ─────────────────────────────────────────
+   bottomnav.css — mobile-first
+   ───────────────────────────────────────── */
+
+.bn-root {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: linear-gradient(to top, #0a0914 80%, transparent);
+  padding: 0 16px 24px;
+  pointer-events: none;
+}
+
+.bn-shell {
+  position: relative;
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: #141226;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 24px;
+  padding: 8px 12px 12px;
+  pointer-events: auto;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* ── item de navegação ── */
+.bn-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #55527a;
+  font-family: inherit;
+  transition: color 0.2s;
+  flex: 1;
+  min-width: 0;
+}
+
+.bn-item:hover {
+  color: #8a87a8;
+}
+
+.bn-item--active {
+  color: #a78bfa;
+}
+
+.bn-item__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bn-item__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.bn-item__label {
+  font-size: 10px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ── spacer para o botão flutuante ── */
+.bn-spacer {
+  width: 56px;
+  flex-shrink: 0;
+}
+
+/* ── botão flutuante de adicionar ── */
+.bn-add {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #a78bfa);
+  border: 4px solid #0a0914;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.5);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.bn-add:hover {
+  transform: translateX(-50%) scale(1.05);
+  box-shadow: 0 6px 24px rgba(124, 58, 237, 0.6);
+}
+
+.bn-add:active {
+  transform: translateX(-50%) scale(0.95);
+}
+
+.bn-add svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+}
+
+/* ─────────────────────────────────────────
+   RESPONSIVO
+   ───────────────────────────────────────── */
+@media (min-width: 640px) {
+  .bn-root {
+    padding-bottom: 32px;
+  }
+
+  .bn-shell {
+    max-width: 520px;
+    border-radius: 28px;
+  }
+
+  .bn-item__icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .bn-item__label {
+    font-size: 11px;
+  }
+}

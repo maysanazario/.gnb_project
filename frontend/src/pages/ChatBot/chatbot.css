@@ -398,3 +398,13 @@
     background-position: -200% 0;
   }
 }
+/* Ajuste para bottom nav */
+.cb-input-area {
+  padding-bottom: 80px;
+}
+
+@media (min-width: 640px) {
+  .cb-input-area {
+    padding-bottom: 90px;
+  }
+}

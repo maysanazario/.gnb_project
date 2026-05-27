@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './newitem.css'
+import BottomNav from '../BottomNav'
+import { addWishlistItem } from '../../data/mockData'
 
 export default function NewItem() {
   const navigate = useNavigate()
@@ -48,9 +50,13 @@ export default function NewItem() {
     if (!formData.category) return alert('Por favor, selecione uma categoria')
     if (!formData.priority) return alert('Por favor, selecione a prioridade')
 
-    console.log('Novo item:', { ...formData, price: parseFloat(formData.price) })
+    addWishlistItem({
+      ...formData,
+      price: parseFloat(formData.price),
+    })
+
     alert('✨ Item adicionado com sucesso!')
-    navigate('/wishlistOne')
+    navigate('/wishlist')
   }
 
   return (
@@ -68,7 +74,7 @@ export default function NewItem() {
           <button
             className="ni-header__back"
             type="button"
-            onClick={() => navigate('/wishlistOne')}
+            onClick={() => navigate('/wishlist')}
             aria-label="Voltar"
           >
             <svg viewBox="0 0 24 24" fill="none" strokeWidth="2.5" aria-hidden="true">
@@ -98,7 +104,7 @@ export default function NewItem() {
           <div className="ni-group">
             <label className="ni-label" htmlFor="ni-price">Preço</label>
             <div className="ni-price-wrap">
-              <span className="ni-price-prefix">0,00</span>
+              <span className="ni-price-prefix">R$</span>
               <input
                 id="ni-price"
                 className="ni-price-input"
@@ -189,7 +195,13 @@ export default function NewItem() {
           </button>
 
         </form>
+
+        {/* spacer para bottom nav */}
+        <div className="ni-spacer" />
       </div>
+
+      {/* ── bottom navigation ── */}
+      <BottomNav active="home" />
     </div>
   )
 }

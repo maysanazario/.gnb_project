@@ -1,49 +1,8 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import './wishlistitem.css'
-
-const MOCK_ITEMS = [
-  {
-    id: 1,
-    name: 'iPhone 15 Pro',
-    category: 'Eletrônico',
-    priority: 'alta',
-    price: 7999.00,
-    purchased: false,
-    link: 'apple.com/br/shop/iphone-15-pro',
-    notes: 'Versão Titânio Natural, 256GB. Comprar na loja oficial para garantia brasileira.',
-  },
-  {
-    id: 2,
-    name: 'Cafeteira Nespresso',
-    category: 'Casa',
-    priority: 'alta',
-    price: 599.00,
-    purchased: false,
-    link: '',
-    notes: '',
-  },
-  {
-    id: 3,
-    name: 'Tênis Nike Air Max',
-    category: 'Moda',
-    priority: 'media',
-    price: 899.00,
-    purchased: false,
-    link: '',
-    notes: '',
-  },
-  {
-    id: 4,
-    name: 'Livro: Pai Rico Pai Pobre',
-    category: 'Livros',
-    priority: 'baixa',
-    price: 49.90,
-    purchased: true,
-    link: '',
-    notes: '',
-  },
-]
+import BottomNav from '../BottomNav'
+import { getWishlistItem, deleteWishlistItem, formatCurrency } from '../../data/mockData'
 
 const PRIORITY_CONFIG = {
   alta:  { label: 'Alta prioridade',  color: '#ef4444', bg: 'rgba(239,68,68,0.18)',  border: 'rgba(239,68,68,0.25)'  },
@@ -55,20 +14,17 @@ export default function WishlistItem() {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const item = MOCK_ITEMS.find((i) => i.id === Number(id)) ?? MOCK_ITEMS[0]
-  const [purchased, setPurchased] = useState(item.purchased)
-  
-  // Estado para o modal de confirmação de exclusão
+  const item = getWishlistItem(id)
+  const [purchased, setPurchased] = useState(item?.purchased ?? false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
-  const pri = PRIORITY_CONFIG[item.priority]
+  // Se não encontrar o item, redireciona para a lista
+  if (!item) {
+    navigate('/wishlist')
+    return null
+  }
 
-  const formatCurrency = (v) =>
-    new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-      minimumFractionDigits: 2,
-    }).format(v)
+  const pri = PRIORITY_CONFIG[item.priority]
 
   const categoryIcon = (
     <svg viewBox="0 0 24 24" fill="none" strokeWidth="1.8" aria-hidden="true">
@@ -77,12 +33,9 @@ export default function WishlistItem() {
     </svg>
   )
 
-  // Função para excluir o item
   const handleDelete = () => {
-    // TODO: conectar com a API para remover o item
-    console.log('Item excluído:', item.id, item.name)
+    deleteWishlistItem(item.id)
     setShowDeleteModal(false)
-    // Redireciona para a lista de desejos após excluir
     navigate('/wishlist')
   }
 
@@ -124,8 +77,7 @@ export default function WishlistItem() {
                 <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
               </svg>
             </button>
-            
-            {/* Botão de excluir - ícone de lixeira */}
+
             <button
               className="wi-header__icon-btn wi-header__icon-btn--delete"
               type="button"
@@ -247,7 +199,7 @@ export default function WishlistItem() {
             </div>
             <h3 className="wi-modal__title">Excluir item?</h3>
             <p className="wi-modal__message">
-              Tem certeza que deseja excluir <strong>“{item.name}”</strong>?<br />
+              Tem certeza que deseja excluir <strong>"{item.name}"</strong>?<br />
               Esta ação não pode ser desfeita.
             </p>
             <div className="wi-modal__actions">

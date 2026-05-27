@@ -424,3 +424,7 @@
     grid-template-columns: repeat(3, 1fr);
   }
 }
+/* spacer para bottom nav */
+.wl-spacer {
+  height: 100px;
+}

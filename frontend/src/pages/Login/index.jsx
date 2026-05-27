@@ -7,16 +7,14 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  
-  // Novos estados para validação
+
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
   const [touchedEmail, setTouchedEmail] = useState(false)
   const [touchedPassword, setTouchedPassword] = useState(false)
-  
+
   const navigate = useNavigate()
 
-  // Validação do email em tempo real
   const validateEmail = (value) => {
     if (!touchedEmail) return ''
     if (value === '') {
@@ -28,7 +26,6 @@ export default function Login() {
     return ''
   }
 
-  // Validação da senha em tempo real
   const validatePassword = (value) => {
     if (!touchedPassword) return ''
     if (value === '') {
@@ -37,27 +34,23 @@ export default function Login() {
     return ''
   }
 
-  // Atualiza email e valida
   const handleEmailChange = (e) => {
     const value = e.target.value
     setEmail(value)
     setEmailError(validateEmail(value))
   }
 
-  // Atualiza senha e valida
   const handlePasswordChange = (e) => {
     const value = e.target.value
     setPassword(value)
     setPasswordError(validatePassword(value))
   }
 
-  // Quando o campo email perde o foco
   const handleEmailBlur = () => {
     setTouchedEmail(true)
     setEmailError(validateEmail(email))
   }
 
-  // Quando o campo senha perde o foco
   const handlePasswordBlur = () => {
     setTouchedPassword(true)
     setPasswordError(validatePassword(password))
@@ -65,26 +58,22 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    
-    // Marcar campos como tocados para mostrar erros
+
     setTouchedEmail(true)
     setTouchedPassword(true)
-    
-    // Validar novamente
+
     const isEmailValid = email !== '' && email.includes('@') && email.includes('.')
     const isPasswordValid = password !== ''
-    
+
     if (!isEmailValid) {
       setEmailError('Digite um email válido')
     }
     if (!isPasswordValid) {
       setPasswordError('Senha obrigatória')
     }
-    
-    // Se tudo estiver válido, faz o login
+
     if (isEmailValid && isPasswordValid) {
       console.log({ email, password })
-      // TODO: conectar com a API do backend
       navigate('/dashboard')
     }
   }

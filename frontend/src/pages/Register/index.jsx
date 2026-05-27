@@ -22,10 +22,7 @@ export default function Register() {
     }
 
     try {
-      // TODO: conectar com backend
       console.log({ name, email, password })
-      
-      // Após cadastro bem sucedido, redireciona para o login
       navigate('/onboard')
     } catch (error) {
       console.error('Erro ao cadastrar:', error)

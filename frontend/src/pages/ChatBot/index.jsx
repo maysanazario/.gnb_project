@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './chatbot.css'
+import BottomNav from '../BottomNav'
 import botAvatar from '../../assets/img/rei-do-troco.png'
 
 const BotAvatar = () => (
@@ -20,11 +21,11 @@ const UserAvatar = () => (
 )
 
 const BOT_RESPONSES = {
-  saldo: `Seu saldo atual é **R$ 1.247,83** 💳\n\nConta Corrente: R$ 847,83\nPoupança: R$ 400,00`,
-  poupar: `Você pode poupar cerca de **R$ 650/mês** 🐷\nRegra 50-30-20 aplicada à sua renda.\n\nEssenciais: 50% · Desejos: 30% · Poupança: 20%`,
-  extrato: `📊 Extrato dos últimos 30 dias:\n\nSupermercado: R$ 347,90\nFarmácia: R$ 89,50\nRestaurante: R$ 124,70\nNetflix: R$ 39,90`,
-  comprar: `Com base no seu orçamento, você tem **R$ 432,17** disponível para gastos não essenciais este mês. 💰\n\n✅ Recomendo esperar mais 5 dias para decisões grandes.`,
-  default: `Não entendi muito bem. 😅\n\nVocê pode perguntar sobre:\n• saldo\n• quanto posso poupar?\n• extrato\n• devo comprar?`,
+  saldo: "Seu saldo atual é **R$ 1.247,83** 💳\n\nConta Corrente: R$ 847,83\nPoupança: R$ 400,00",
+  poupar: "Você pode poupar cerca de **R$ 650/mês** 🐷\nRegra 50-30-20 aplicada à sua renda.\n\nEssenciais: 50% · Desejos: 30% · Poupança: 20%",
+  extrato: "📊 Extrato dos últimos 30 dias:\n\nSupermercado: R$ 347,90\nFarmácia: R$ 89,50\nRestaurante: R$ 124,70\nNetflix: R$ 39,90",
+  comprar: "Com base no seu orçamento, você tem **R$ 432,17** disponível para gastos não essenciais este mês. 💰\n\n✅ Recomendo esperar mais 5 dias para decisões grandes.",
+  default: "Não entendi muito bem. 😅\n\nVocê pode perguntar sobre:\n• saldo\n• quanto posso poupar?\n• extrato\n• devo comprar?",
 }
 
 function getBotResponse(text) {
@@ -36,7 +37,6 @@ function getBotResponse(text) {
   return BOT_RESPONSES.default
 }
 
-// Renderiza texto com **bold** simples
 function MessageText({ text }) {
   return (
     <div className="cb-msg__text">
@@ -54,7 +54,6 @@ function MessageText({ text }) {
   )
 }
 
-// Componente de Skeleton Loading
 const SkeletonLoading = () => (
   <div className="cb-row cb-row--bot">
     <BotAvatar />
@@ -72,7 +71,7 @@ export default function ChatBot() {
     {
       id: 1,
       type: 'bot',
-      text: 'Olá, Juninho! 👋 Sou o Assistente do GNB.\nComo posso te ajudar?',
+      text: "Olá, Juninho! 👋 Sou o Assistente do GNB.\nComo posso te ajudar?",
     },
   ])
   const [inputValue, setInputValue] = useState('')
@@ -110,14 +109,14 @@ export default function ChatBot() {
 
   return (
     <div className="cb-root">
-      {/* ── decorações ── */}
+      {/* decoracoes */}
       <div className="cb-deco" aria-hidden="true">
         <div className="cb-deco__orb cb-deco__orb--1" />
         <div className="cb-deco__orb cb-deco__orb--2" />
       </div>
 
       <div className="cb-shell">
-        {/* ── header ── */}
+        {/* header */}
         <header className="cb-header">
           <button
             className="cb-header__back"
@@ -142,7 +141,7 @@ export default function ChatBot() {
           </div>
         </header>
 
-        {/* ── mensagens ── */}
+        {/* mensagens */}
         <div className="cb-messages" role="log" aria-live="polite">
           {messages.map((msg, idx) => (
             <div
@@ -158,14 +157,13 @@ export default function ChatBot() {
             </div>
           ))}
 
-          {/* Skeleton Loading - substitui o indicador de digitação antigo */}
           {isTyping && <SkeletonLoading />}
 
           <div ref={messagesEndRef} />
         </div>
 
-        {/* ── quick questions ── */}
-        <div className="cb-quick" role="group" aria-label="Perguntas rápidas">
+        {/* quick questions */}
+        <div className="cb-quick" role="group" aria-label="Perguntas rapidas">
           {quickQuestions.map((q) => (
             <button
               key={q}
@@ -178,7 +176,7 @@ export default function ChatBot() {
           ))}
         </div>
 
-        {/* ── input ── */}
+        {/* input */}
         <div className="cb-input-area">
           <div className="cb-input-wrap">
             <input
@@ -205,6 +203,9 @@ export default function ChatBot() {
           </div>
         </div>
       </div>
+
+      {/* bottom navigation */}
+      <BottomNav active="chat" />
     </div>
   )
 }

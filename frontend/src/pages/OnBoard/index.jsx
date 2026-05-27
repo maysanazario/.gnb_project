@@ -35,8 +35,6 @@ export default function MonthlyIncome() {
   const handleContinue = () => {
     console.log({ monthlyIncome })
     navigate('/dashboard')
-    // TODO: salvar no backend
-    // navigate('/next-step')
   }
 
   return (
@@ -61,10 +59,10 @@ export default function MonthlyIncome() {
 
       {/* Card */}
       <div className="card income-card">
-        
+
         {/* Título */}
         <h1 className="income-title">QUAL A SUA RENDA MENSAL?</h1>
-        
+
         <p className="income-description">
           Usamos isso para calcular quanto você pode<br />
           gastar e poupar durante o mês.

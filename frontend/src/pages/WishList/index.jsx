@@ -1,45 +1,13 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './wishlist.css'
+import BottomNav from '../BottomNav'
+import { MOCK_WISHLIST, formatCurrency } from '../../data/mockData'
 
 export default function WishlistOne() {
   const navigate = useNavigate()
   const [activeFilter, setActiveFilter] = useState('todos')
-
-  const [items] = useState([
-    {
-      id: 1,
-      name: 'iPhone 15 Pro',
-      category: 'Eletrônico',
-      priority: 'alta',
-      price: 7999.00,
-      purchased: false,
-    },
-    {
-      id: 2,
-      name: 'Cafeteira Nespresso',
-      category: 'Casa',
-      priority: 'alta',
-      price: 599.00,
-      purchased: false,
-    },
-    {
-      id: 3,
-      name: 'Tênis Nike Air Max',
-      category: 'Moda',
-      priority: 'media',
-      price: 899.00,
-      purchased: false,
-    },
-    {
-      id: 4,
-      name: 'Livro: Pai Rico Pai Pobre',
-      category: 'Livros',
-      priority: 'baixa',
-      price: 49.90,
-      purchased: true,
-    },
-  ])
+  const [items] = useState(MOCK_WISHLIST)
 
   const filters = [
     { id: 'todos', label: 'Todos' },
@@ -65,13 +33,6 @@ export default function WishlistOne() {
   )
 
   const totalValue = items.reduce((sum, i) => sum + i.price, 0)
-
-  const formatCurrency = (v) =>
-    new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-      minimumFractionDigits: 2,
-    }).format(v)
 
   return (
     <div className="wl-root">
@@ -140,7 +101,7 @@ export default function WishlistOne() {
             <li key={item.id}>
               <button
                 className="wl-card"
-                onClick={() => navigate(`/wishlist-item`)}
+                onClick={() => navigate(`/wishlist-item/${item.id}`)}
                 aria-label={`Ver detalhes de ${item.name}`}
               >
                 {/* linha do nome */}
@@ -186,7 +147,13 @@ export default function WishlistOne() {
             </li>
           ))}
         </ul>
+
+        {/* spacer para bottom nav */}
+        <div className="wl-spacer" />
       </div>
+
+      {/* ── bottom navigation ── */}
+      <BottomNav active="home" />
     </div>
   )
 }
