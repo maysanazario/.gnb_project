@@ -1,5 +1,7 @@
 /* ─────────────────────────────────────────
-   bottomnav.css — mobile-first
+   bottomnav.css — MOBILE-FIRST
+   Navegação inferior SEM TEXTO, apenas ícones
+   Design minimalista para mobile
    ───────────────────────────────────────── */
 
 .bn-root {
@@ -23,61 +25,49 @@
   background: #141226;
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 24px;
-  padding: 8px 12px 12px;
+  padding: 10px 16px;
   pointer-events: auto;
   box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.3);
 }
 
-/* ── item de navegação ── */
+/* ── Item de navegação — APENAS ÍCONE ── */
 .bn-item {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 6px 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
   background: transparent;
   border: none;
   cursor: pointer;
   color: #55527a;
   font-family: inherit;
-  transition: color 0.2s;
-  flex: 1;
-  min-width: 0;
+  transition: color 0.2s, background 0.2s;
 }
 
 .bn-item:hover {
   color: #8a87a8;
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .bn-item--active {
   color: #a78bfa;
+  background: rgba(124, 58, 237, 0.12);
 }
 
-.bn-item__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.bn-item svg {
+  width: 24px;
+  height: 24px;
 }
 
-.bn-item__icon svg {
-  width: 22px;
-  height: 22px;
-}
-
-.bn-item__label {
-  font-size: 10px;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-/* ── spacer para o botão flutuante ── */
+/* ── Espaço para o botão flutuante ── */
 .bn-spacer {
   width: 56px;
   flex-shrink: 0;
 }
 
-/* ── botão flutuante de adicionar ── */
+/* ── Botão flutuante de adicionar ── */
 .bn-add {
   position: absolute;
   top: -24px;
@@ -113,7 +103,7 @@
 }
 
 /* ─────────────────────────────────────────
-   RESPONSIVO
+   RESPONSIVO — tablets
    ───────────────────────────────────────── */
 @media (min-width: 640px) {
   .bn-root {
@@ -125,12 +115,13 @@
     border-radius: 28px;
   }
 
-  .bn-item__icon svg {
-    width: 24px;
-    height: 24px;
+  .bn-item {
+    width: 48px;
+    height: 48px;
   }
 
-  .bn-item__label {
-    font-size: 11px;
+  .bn-item svg {
+    width: 26px;
+    height: 26px;
   }
 }

@@ -13,8 +13,8 @@ export default function ForgotPassword() {
   // ── Validação do email em tempo real ──
   const validateEmail = (value) => {
     if (!touchedEmail) return ''
-    if (value === '') return 'Digite um email válido'
-    if (!value.includes('@') || !value.includes('.')) return 'Digite um email válido'
+    if (value === '') return 'Digite um e-mail válido'
+    if (!value.includes('@') || !value.includes('.')) return 'Digite um e-mail válido'
     return ''
   }
 
@@ -35,7 +35,7 @@ export default function ForgotPassword() {
 
     const isEmailValid = email !== '' && email.includes('@') && email.includes('.')
     if (!isEmailValid) {
-      setEmailError('Digite um email válido')
+      setEmailError('Digite um e-mail válido')
       return
     }
 
@@ -90,7 +90,7 @@ export default function ForgotPassword() {
                 onChange={handleEmailChange}
                 onBlur={handleEmailBlur}
                 autoComplete="email"
-                placeholder="seu@email.com"
+                placeholder="seu@e-mail.com"
               />
               {emailError && (
                 <span className="fp-error-message">⚠️ {emailError}</span>

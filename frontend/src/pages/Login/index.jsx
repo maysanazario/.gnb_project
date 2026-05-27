@@ -18,10 +18,10 @@ export default function Login() {
   const validateEmail = (value) => {
     if (!touchedEmail) return ''
     if (value === '') {
-      return 'Digite um email válido'
+      return 'Digite um e-mail válido'
     }
     if (!value.includes('@') || !value.includes('.')) {
-      return 'Digite um email válido'
+      return 'Digite um e-mail válido'
     }
     return ''
   }
@@ -66,7 +66,7 @@ export default function Login() {
     const isPasswordValid = password !== ''
 
     if (!isEmailValid) {
-      setEmailError('Digite um email válido')
+      setEmailError('Digite um e-mail válido')
     }
     if (!isPasswordValid) {
       setPasswordError('Senha obrigatória')

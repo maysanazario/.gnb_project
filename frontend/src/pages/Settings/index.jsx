@@ -78,7 +78,7 @@ export default function Settings() {
           </div>
           <div className="st-profile__info">
             <span className="st-profile__name">Juninho</span>
-            <span className="st-profile__email">juninho@email.com</span>
+            <span className="st-profile__email">juninho@e-mail.com</span>
           </div>
         </div>
 

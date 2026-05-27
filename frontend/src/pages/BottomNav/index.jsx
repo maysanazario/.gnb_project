@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom'
 import './bottomnav.css'
 
-/* ── ÍCONES SVG INLINE — otimizados para mobile ── */
+/* ── ÍCONES SVG — sem texto, apenas ícones visuais ── */
 
 const IconHome = ({ active }) => (
   <svg viewBox="0 0 24 24" fill="none" strokeWidth={active ? 2.2 : 1.6} strokeLinecap="round" strokeLinejoin="round">
@@ -47,33 +47,63 @@ const IconPlus = () => (
 )
 
 /* ── CONFIGURAÇÃO DOS ITENS DE NAVEGAÇÃO ──
-   Ordem: Esquerda → Centro (botão flutuante) → Direita
-   Wishlist adicionado conforme solicitado pelo usuário
+   Ordem visual: [Home] [Reports] [+] [Wishlist] [Settings]
+   Sem texto — apenas ícones para design mais limpo no mobile
 ── */
 
 const NAV_ITEMS_LEFT = [
-  { id: 'home', label: 'Início', icon: IconHome, path: '/dashboard' },
-  { id: 'reports', label: 'Relatórios', icon: IconReports, path: '/reports' },
+  { id: 'home', icon: IconHome, path: '/dashboard' },
+  { id: 'reports', icon: IconReports, path: '/reports' },
 ]
 
 const NAV_ITEMS_RIGHT = [
-  { id: 'wishlist', label: 'Desejos', icon: IconWishlist, path: '/wishlist' },
-  { id: 'settings', label: 'Conf.', icon: IconSettings, path: '/settings' },
+  { id: 'wishlist', icon: IconWishlist, path: '/wishlist' },
+  { id: 'settings', icon: IconSettings, path: '/settings' },
 ]
 
-export default function BottomNav({ active }) {
+/* ── MAPA DE ROTAS PARA DETECÇÃO AUTOMÁTICA ──
+   Cada rota é mapeada para o ID do item ativo correspondente
+   Isso garante que a navbar funcione em QUALQUER página do app
+── */
+const ROUTE_MAP = {
+  '/dashboard': 'home',
+  '/reports': 'reports',
+  '/transactions': 'reports',      // Transações agrupadas com Relatórios
+  '/wishlist': 'wishlist',
+  '/wishlist-item': 'wishlist',     // Detalhe do item mantém wishlist ativo
+  '/newitem': 'wishlist',           // Novo item mantém wishlist ativo
+  '/chatbot': 'chat',               // ChatBot/IA
+  '/settings': 'settings',
+}
+
+export default function BottomNav() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  /* ── Determina qual item está ativo baseado na rota atual ── */
-  const currentPath = location.pathname
-  const activeItem = active ||
-    [...NAV_ITEMS_LEFT, ...NAV_ITEMS_RIGHT].find(item => item.path === currentPath)?.id || 'home'
+  /* ── DETECÇÃO INTELIGENTE DA ROTA ATIVA ──
+     Verifica a rota atual e retorna o ID do item correspondente
+     Se não encontrar match exato, faz busca parcial (ex: /wishlist-item/123 → wishlist)
+  ── */
+  const getActiveItem = () => {
+    const path = location.pathname
+
+    // Match exato primeiro
+    if (ROUTE_MAP[path]) return ROUTE_MAP[path]
+
+    // Match parcial (para rotas com parâmetros como /wishlist-item/1)
+    for (const [route, itemId] of Object.entries(ROUTE_MAP)) {
+      if (path.startsWith(route)) return itemId
+    }
+
+    return 'home' // fallback padrão
+  }
+
+  const activeItem = getActiveItem()
 
   return (
     <nav className="bn-root">
       <div className="bn-shell">
-        {/* ── Itens da ESQUERDA: Início + Relatórios ── */}
+        {/* ── Itens da ESQUERDA ── */}
         {NAV_ITEMS_LEFT.map((item) => {
           const isActive = activeItem === item.id
           const Icon = item.icon
@@ -82,20 +112,17 @@ export default function BottomNav({ active }) {
               key={item.id}
               className={`bn-item${isActive ? ' bn-item--active' : ''}`}
               onClick={() => navigate(item.path)}
-              aria-label={item.label}
+              aria-label={item.id}
             >
-              <span className="bn-item__icon">
-                <Icon active={isActive} />
-              </span>
-              <span className="bn-item__label">{item.label}</span>
+              <Icon active={isActive} />
             </button>
           )
         })}
 
-        {/* ── Espaço reservado para o botão flutuante ── */}
+        {/* ── Espaço para o botão flutuante ── */}
         <div className="bn-spacer" />
 
-        {/* ── Itens da DIREITA: Wishlist + Configurações ── */}
+        {/* ── Itens da DIREITA ── */}
         {NAV_ITEMS_RIGHT.map((item) => {
           const isActive = activeItem === item.id
           const Icon = item.icon
@@ -104,24 +131,18 @@ export default function BottomNav({ active }) {
               key={item.id}
               className={`bn-item${isActive ? ' bn-item--active' : ''}`}
               onClick={() => navigate(item.path)}
-              aria-label={item.label}
+              aria-label={item.id}
             >
-              <span className="bn-item__icon">
-                <Icon active={isActive} />
-              </span>
-              <span className="bn-item__label">{item.label}</span>
+              <Icon active={isActive} />
             </button>
           )
         })}
 
-        {/* ── BOTÃO FLUTUANTE CENTRAL: Adicionar despesa ──
-           O botão + sempre navega para /newexpense (registro rápido)
-           independente de qual tela o usuário está
-        ── */}
+        {/* ── BOTÃO FLUTUANTE CENTRAL ── */}
         <button
           className="bn-add"
           onClick={() => navigate('/newexpense')}
-          aria-label="Adicionar despesa"
+          aria-label="adicionar despesa"
         >
           <IconPlus />
         </button>

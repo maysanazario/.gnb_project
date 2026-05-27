@@ -109,7 +109,7 @@ export default function ChatBot() {
 
   return (
     <div className="cb-root">
-      {/* decoracoes */}
+      {/* decorações */}
       <div className="cb-deco" aria-hidden="true">
         <div className="cb-deco__orb cb-deco__orb--1" />
         <div className="cb-deco__orb cb-deco__orb--2" />
@@ -163,7 +163,7 @@ export default function ChatBot() {
         </div>
 
         {/* quick questions */}
-        <div className="cb-quick" role="group" aria-label="Perguntas rapidas">
+        <div className="cb-quick" role="group" aria-label="Perguntas rápidas">
           {quickQuestions.map((q) => (
             <button
               key={q}

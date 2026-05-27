@@ -58,10 +58,10 @@ const MOCK_CATEGORIES = [
 
 export default function Reports() {
   const navigate = useNavigate()
-  const [activePeriod, setActivePeriod] = useState('diario')
+  const [activePeriod, setActivePeriod] = useState('diário')
 
   const periods = [
-    { id: 'diario', label: 'Diário' },
+    { id: 'diário', label: 'Diário' },
     { id: 'mensal', label: 'Mensal' },
     { id: 'anual', label: 'Anual' },
   ]
