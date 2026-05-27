@@ -1,0 +1,288 @@
+/* ============================================================
+   NewExpense — mesmo tema dark/purple do Dashboard
+   ============================================================ */
+
+:root {
+  --ne-bg:           #0f0d1a;
+  --ne-card:         #1a1730;
+  --ne-card2:        #211e38;
+  --ne-purple:       #7c4dff;
+  --ne-purple-light: #9e74ff;
+  --ne-purple-glow:  rgba(124, 77, 255, 0.3);
+  --ne-text:         #ffffff;
+  --ne-muted:        #a09cc0;
+  --ne-border:       rgba(255, 255, 255, 0.07);
+  --ne-radius:       20px;
+  --ne-radius-sm:    14px;
+  --ne-transition:   0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Root ── */
+.ne-root {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--ne-bg);
+  display: flex;
+  flex-direction: column;
+  font-family: 'Nunito', 'Segoe UI', sans-serif;
+  color: var(--ne-text);
+  overflow-x: hidden;
+}
+
+/* ── Glow ── */
+.ne-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(100px);
+  opacity: 0.35;
+  z-index: 0;
+}
+.ne-glow--top {
+  top: -80px; right: -60px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, #7c4dff 0%, transparent 70%);
+}
+
+/* ── Header ── */
+.ne-header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 52px 24px 20px;
+}
+
+.ne-back-btn {
+  width: 40px; height: 40px;
+  background: var(--ne-card);
+  border: 1px solid var(--ne-border);
+  border-radius: 12px;
+  color: var(--ne-text);
+  font-size: 24px;
+  line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: var(--ne-transition);
+}
+.ne-back-btn:hover { background: var(--ne-card2); }
+
+.ne-title {
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: -0.3px;
+}
+
+/* ── Body ── */
+.ne-body {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 8px 24px 24px;
+  overflow-y: auto;
+}
+
+/* ── Campo genérico ── */
+.ne-field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ne-label {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--ne-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+/* ── Input texto ── */
+.ne-input {
+  width: 100%;
+  background: var(--ne-card);
+  border: 1px solid var(--ne-border);
+  border-radius: var(--ne-radius-sm);
+  color: var(--ne-text);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 16px 18px;
+  outline: none;
+  transition: var(--ne-transition);
+}
+.ne-input::placeholder { color: var(--ne-muted); }
+.ne-input:focus {
+  border-color: rgba(124, 77, 255, 0.5);
+  box-shadow: 0 0 0 3px rgba(124, 77, 255, 0.12);
+}
+
+/* ── Input preço ── */
+.ne-price-wrapper {
+  position: relative;
+}
+
+.ne-input--price {
+  padding-right: 52px;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+
+.ne-currency {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--ne-muted);
+  pointer-events: none;
+}
+
+/* ── Categorias ── */
+.ne-categories {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.ne-cat-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 8px;
+  background: var(--ne-card);
+  border: 1px solid var(--ne-border);
+  border-radius: var(--ne-radius-sm);
+  cursor: pointer;
+  transition: var(--ne-transition);
+  font-family: inherit;
+}
+.ne-cat-btn:hover { background: var(--ne-card2); }
+
+.ne-cat-btn--active {
+  background: rgba(124, 77, 255, 0.15);
+  border-color: var(--ne-purple);
+  box-shadow: 0 0 0 1px var(--ne-purple);
+}
+
+.ne-cat-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.ne-cat-label {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--ne-muted);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.ne-cat-btn--active .ne-cat-label {
+  color: var(--ne-purple-light);
+}
+
+/* ── Textarea ── */
+.ne-textarea {
+  width: 100%;
+  background: var(--ne-card);
+  border: 1px solid var(--ne-border);
+  border-radius: var(--ne-radius-sm);
+  color: var(--ne-text);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  padding: 16px 18px;
+  outline: none;
+  resize: none;
+  line-height: 1.6;
+  transition: var(--ne-transition);
+}
+.ne-textarea::placeholder { color: var(--ne-muted); }
+.ne-textarea:focus {
+  border-color: rgba(124, 77, 255, 0.5);
+  box-shadow: 0 0 0 3px rgba(124, 77, 255, 0.12);
+}
+
+/* ── Footer / Botão salvar ── */
+.ne-footer {
+  position: relative;
+  z-index: 1;
+  padding: 16px 24px 40px;
+}
+
+.ne-save-btn {
+  width: 100%;
+  height: 56px;
+  background: var(--ne-purple);
+  color: #fff;
+  border: none;
+  border-radius: var(--ne-radius);
+  font-size: 16px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  box-shadow: 0 8px 28px var(--ne-purple-glow);
+  transition: var(--ne-transition);
+  position: relative;
+  overflow: hidden;
+}
+.ne-save-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 60%);
+}
+.ne-save-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px rgba(124, 77, 255, 0.5);
+}
+.ne-save-btn:active { transform: translateY(0); }
+
+.ne-save-btn--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none;
+}
+
+/* ── Responsivo desktop ── */
+@media (min-width: 480px) {
+  .ne-root {
+    border-left: 1px solid var(--ne-border);
+    border-right: 1px solid var(--ne-border);
+  }
+}
+
+@media (min-width: 768px) {
+  .ne-root {
+    max-width: 560px;
+    border-radius: 24px;
+    margin: 40px auto;
+    min-height: auto;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+  }
+  .ne-header { padding-top: 36px; }
+  .ne-categories { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 360px) {
+  .ne-header { padding: 36px 16px 16px; }
+  .ne-body { padding: 8px 16px 16px; gap: 20px; }
+  .ne-footer { padding: 12px 16px 32px; }
+  .ne-categories { grid-template-columns: repeat(2, 1fr); }
+}
