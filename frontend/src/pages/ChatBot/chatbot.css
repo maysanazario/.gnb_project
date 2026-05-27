@@ -361,3 +361,40 @@
 
   .cb-bubble  { max-width: 60%; }
 }
+
+/* ── SKELETON LOADING ── */
+.cb-skeleton {
+  padding: 12px 16px !important;
+  min-width: 180px;
+}
+
+.cb-skeleton__line {
+  height: 14px;
+  background: linear-gradient(90deg, #2a2740 25%, #3a3655 50%, #2a2740 75%);
+  background-size: 200% 100%;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  animation: skeletonShimmer 1.2s infinite;
+}
+
+.cb-skeleton__line--1 {
+  width: 85%;
+}
+
+.cb-skeleton__line--2 {
+  width: 65%;
+}
+
+.cb-skeleton__line--3 {
+  width: 45%;
+  margin-bottom: 0;
+}
+
+@keyframes skeletonShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

@@ -54,6 +54,18 @@ function MessageText({ text }) {
   )
 }
 
+// Componente de Skeleton Loading
+const SkeletonLoading = () => (
+  <div className="cb-row cb-row--bot">
+    <BotAvatar />
+    <div className="cb-bubble cb-bubble--bot cb-skeleton">
+      <div className="cb-skeleton__line cb-skeleton__line--1" />
+      <div className="cb-skeleton__line cb-skeleton__line--2" />
+      <div className="cb-skeleton__line cb-skeleton__line--3" />
+    </div>
+  </div>
+)
+
 export default function ChatBot() {
   const navigate = useNavigate()
   const [messages, setMessages] = useState([
@@ -146,15 +158,8 @@ export default function ChatBot() {
             </div>
           ))}
 
-          {/* indicador de digitação */}
-          {isTyping && (
-            <div className="cb-row cb-row--bot">
-              <BotAvatar />
-              <div className="cb-bubble cb-bubble--bot cb-bubble--typing">
-                <span /><span /><span />
-              </div>
-            </div>
-          )}
+          {/* Skeleton Loading - substitui o indicador de digitação antigo */}
+          {isTyping && <SkeletonLoading />}
 
           <div ref={messagesEndRef} />
         </div>

@@ -57,6 +57,9 @@ export default function WishlistItem() {
 
   const item = MOCK_ITEMS.find((i) => i.id === Number(id)) ?? MOCK_ITEMS[0]
   const [purchased, setPurchased] = useState(item.purchased)
+  
+  // Estado para o modal de confirmação de exclusão
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
 
   const pri = PRIORITY_CONFIG[item.priority]
 
@@ -73,6 +76,15 @@ export default function WishlistItem() {
       <circle cx="12" cy="17" r="1.2" fill="currentColor" />
     </svg>
   )
+
+  // Função para excluir o item
+  const handleDelete = () => {
+    // TODO: conectar com a API para remover o item
+    console.log('Item excluído:', item.id, item.name)
+    setShowDeleteModal(false)
+    // Redireciona para a lista de desejos após excluir
+    navigate('/wishlist')
+  }
 
   return (
     <div className="wi-root">
@@ -100,17 +112,34 @@ export default function WishlistItem() {
 
           <h1 className="wi-header__title">{item.name}</h1>
 
-          <button
-            className="wi-header__icon-btn"
-            type="button"
-            onClick={() => navigate(`/wishlist-edit/${item.id}`)}
-            aria-label="Editar"
-          >
-            <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" aria-hidden="true">
-              <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
-              <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
-            </svg>
-          </button>
+          <div className="wi-header__actions">
+            <button
+              className="wi-header__icon-btn"
+              type="button"
+              onClick={() => navigate(`/wishlist-edit/${item.id}`)}
+              aria-label="Editar"
+            >
+              <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" aria-hidden="true">
+                <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+                <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+              </svg>
+            </button>
+            
+            {/* Botão de excluir - ícone de lixeira */}
+            <button
+              className="wi-header__icon-btn wi-header__icon-btn--delete"
+              type="button"
+              onClick={() => setShowDeleteModal(true)}
+              aria-label="Excluir item"
+            >
+              <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" aria-hidden="true">
+                <polyline points="3 6 5 6 21 6" />
+                <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6" />
+                <line x1="10" y1="11" x2="10" y2="17" />
+                <line x1="14" y1="11" x2="14" y2="17" />
+              </svg>
+            </button>
+          </div>
         </header>
 
         <div className="wi-body">
@@ -203,6 +232,41 @@ export default function WishlistItem() {
           </button>
         </div>
       </div>
+
+      {/* ── MODAL DE CONFIRMAÇÃO DE EXCLUSÃO ── */}
+      {showDeleteModal && (
+        <div className="wi-modal-overlay" onClick={() => setShowDeleteModal(false)}>
+          <div className="wi-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="wi-modal__icon">
+              <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+                <polyline points="3 6 5 6 21 6" />
+                <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6" />
+                <line x1="10" y1="11" x2="10" y2="17" />
+                <line x1="14" y1="11" x2="14" y2="17" />
+              </svg>
+            </div>
+            <h3 className="wi-modal__title">Excluir item?</h3>
+            <p className="wi-modal__message">
+              Tem certeza que deseja excluir <strong>“{item.name}”</strong>?<br />
+              Esta ação não pode ser desfeita.
+            </p>
+            <div className="wi-modal__actions">
+              <button
+                className="wi-modal__btn wi-modal__btn--cancel"
+                onClick={() => setShowDeleteModal(false)}
+              >
+                Cancelar
+              </button>
+              <button
+                className="wi-modal__btn wi-modal__btn--delete"
+                onClick={handleDelete}
+              >
+                Sim, excluir
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

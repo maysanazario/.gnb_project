@@ -5,31 +5,96 @@ import logo from '../../assets/img/Logo_gnb.png'
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
-  const [email, setEmail] = useState('juninhogameplays@gmail.com')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  
+  // Novos estados para validação
+  const [emailError, setEmailError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+  const [touchedEmail, setTouchedEmail] = useState(false)
+  const [touchedPassword, setTouchedPassword] = useState(false)
+  
   const navigate = useNavigate()
+
+  // Validação do email em tempo real
+  const validateEmail = (value) => {
+    if (!touchedEmail) return ''
+    if (value === '') {
+      return 'Digite um email válido'
+    }
+    if (!value.includes('@') || !value.includes('.')) {
+      return 'Digite um email válido'
+    }
+    return ''
+  }
+
+  // Validação da senha em tempo real
+  const validatePassword = (value) => {
+    if (!touchedPassword) return ''
+    if (value === '') {
+      return 'Senha obrigatória'
+    }
+    return ''
+  }
+
+  // Atualiza email e valida
+  const handleEmailChange = (e) => {
+    const value = e.target.value
+    setEmail(value)
+    setEmailError(validateEmail(value))
+  }
+
+  // Atualiza senha e valida
+  const handlePasswordChange = (e) => {
+    const value = e.target.value
+    setPassword(value)
+    setPasswordError(validatePassword(value))
+  }
+
+  // Quando o campo email perde o foco
+  const handleEmailBlur = () => {
+    setTouchedEmail(true)
+    setEmailError(validateEmail(email))
+  }
+
+  // Quando o campo senha perde o foco
+  const handlePasswordBlur = () => {
+    setTouchedPassword(true)
+    setPasswordError(validatePassword(password))
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // TODO: conectar com a API do backend
-    console.log({ email, password })
     
-    // Após login bem-sucedido, redireciona para o dashboard
-    // navigate('/dashboard')
+    // Marcar campos como tocados para mostrar erros
+    setTouchedEmail(true)
+    setTouchedPassword(true)
+    
+    // Validar novamente
+    const isEmailValid = email !== '' && email.includes('@') && email.includes('.')
+    const isPasswordValid = password !== ''
+    
+    if (!isEmailValid) {
+      setEmailError('Digite um email válido')
+    }
+    if (!isPasswordValid) {
+      setPasswordError('Senha obrigatória')
+    }
+    
+    // Se tudo estiver válido, faz o login
+    if (isEmailValid && isPasswordValid) {
+      console.log({ email, password })
+      // TODO: conectar com a API do backend
+      navigate('/dashboard')
+    }
   }
 
   const handleForgotPassword = () => {
-    // Redireciona para a página de recuperar senha
     navigate('/forgot-password')
   }
 
   const handleSignUp = () => {
-    // Redireciona para a página de cadastro
     navigate('/register')
-  }
-   const handleDashboard = () => {
-    // Redireciona para a página de cadastro
-    navigate('/dashboard')
   }
 
   return (
@@ -57,24 +122,30 @@ export default function Login() {
 
         <form onSubmit={handleSubmit}>
           <label className="label" htmlFor="email">Email</label>
-          <div className="input-wrap input-email">
+          <div className={`input-wrap input-email ${emailError ? 'error' : ''}`}>
             <input
               id="email"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleEmailChange}
+              onBlur={handleEmailBlur}
               autoComplete="email"
+              placeholder='Digite seu email'
             />
+            {emailError && (
+              <span className="error-message">⚠️ {emailError}</span>
+            )}
           </div>
 
           <label className="label" htmlFor="senha">Senha</label>
-          <div className="input-wrap input-pass">
+          <div className={`input-wrap input-pass ${passwordError ? 'error' : ''}`}>
             <input
               id="senha"
               type={showPassword ? 'text' : 'password'}
-              placeholder="••••••••••••••••••••"
+              placeholder="Digite sua senha"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
+              onBlur={handlePasswordBlur}
               autoComplete="current-password"
             />
             <button
@@ -94,6 +165,9 @@ export default function Login() {
                 </svg>
               )}
             </button>
+            {passwordError && (
+              <span className="error-message">⚠️ {passwordError}</span>
+            )}
           </div>
 
           <div className="forgot">
@@ -102,7 +176,7 @@ export default function Login() {
             </button>
           </div>
 
-          <button type="submit" className="btn-entrar" onClick={handleDashboard}>
+          <button type="submit" className="btn-entrar">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
             </svg>
