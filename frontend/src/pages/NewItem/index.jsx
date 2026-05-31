@@ -2,7 +2,11 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './newitem.css'
 import BottomNav from '../BottomNav'
-import { addWishlistItem } from '../../data/mockData'
+import { createWishlistItem } from '../../services/wishlistService'
+import {
+  WISHLIST_PRIORITY_OPTIONS,
+  WISHLIST_PRIORITY_VALUES,
+} from '../../constants/wishlistPriority'
 
 export default function NewItem() {
   const navigate = useNavigate()
@@ -18,14 +22,22 @@ export default function NewItem() {
 
   const [activeCategory, setActiveCategory] = useState('')
   const [activePriority, setActivePriority] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const categories = ['Eletrônico', 'Moda', 'Casa', 'Livros', 'Outros']
-
-  const priorities = [
-    { value: 'alta',  label: 'Alta',  color: '#ef4444' },
-    { value: 'media', label: 'Média', color: '#f59e0b' },
-    { value: 'baixa', label: 'Baixa', color: '#10b981' },
+  const categories = [
+    'Eletrônicos',
+    'Moda',
+    'Casa',
+    'Beleza',
+    'Alimentos',
+    'Esportes',
+    'Livros',
+    'Jogos',
+    'Viagem',
+    'Outros',
   ]
+
+  const priorities = WISHLIST_PRIORITY_OPTIONS
 
   const handleChange = (field, value) =>
     setFormData((prev) => ({ ...prev, [field]: value }))
@@ -42,21 +54,48 @@ export default function NewItem() {
     return formData.price.replace('.', ',')
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!formData.name)    return alert('Por favor, informe o nome do item')
-    if (!formData.price || parseFloat(formData.price) === 0)
-                           return alert('Por favor, informe o preço do item')
-    if (!formData.category) return alert('Por favor, selecione uma categoria')
-    if (!formData.priority) return alert('Por favor, selecione a prioridade')
 
-    addWishlistItem({
-      ...formData,
-      price: parseFloat(formData.price),
-    })
+    const name = formData.name.trim()
+    const priceValue = parseFloat(formData.price)
+    const category = formData.category
+    const priority = Number(formData.priority)
 
-    alert('✨ Item adicionado com sucesso!')
-    navigate('/wishlist')
+    if (!name) {
+      return alert('Por favor, informe o nome do item')
+    }
+    if (!formData.price || Number.isNaN(priceValue) || priceValue <= 0) {
+      return alert('Por favor, informe um preço válido maior que zero')
+    }
+    if (!category) {
+      return alert('Por favor, selecione uma categoria')
+    }
+    if (!WISHLIST_PRIORITY_VALUES.includes(priority)) {
+      return alert('Por favor, selecione a prioridade')
+    }
+
+    setIsSubmitting(true)
+
+    try {
+      await createWishlistItem({
+        name,
+        price: priceValue,
+        category,
+        priority,
+        status: 'Quero',
+        link: formData.link.trim(),
+        notes: formData.notes.trim(),
+      })
+
+      alert('✨ Item adicionado com sucesso!')
+      navigate('/wishlist')
+    } catch (error) {
+      console.error(error)
+      alert('Não foi possível salvar o item. Tente novamente.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -187,11 +226,11 @@ export default function NewItem() {
           </div>
 
           {/* Submit */}
-          <button type="submit" className="ni-submit">
+          <button type="submit" className="ni-submit" disabled={isSubmitting}>
             <svg viewBox="0 0 24 24" fill="none" strokeWidth="2.5" aria-hidden="true">
               <polyline points="20 6 9 17 4 12" />
             </svg>
-            Salvar Item
+            {isSubmitting ? 'Salvando...' : 'Salvar Item'}
           </button>
 
         </form>
@@ -201,7 +240,7 @@ export default function NewItem() {
       </div>
 
       {/* ── bottom navigation ── */}
-      <BottomNav active="home" />
+      <BottomNav active="wishlist" />
     </div>
   )
 }

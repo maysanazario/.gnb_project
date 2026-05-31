@@ -1,30 +1,73 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import './wishlistitem.css'
 import BottomNav from '../BottomNav'
-import { getWishlistItem, deleteWishlistItem, formatCurrency } from '../../data/mockData'
+import { getWishlistItem, deleteWishlistItem, updateWishlistItem } from '../../services/wishlistService'
+import { formatCurrency } from '../../data/mockData'
+import {
+  WISHLIST_PRIORITY_COLORS,
+  WISHLIST_PRIORITY_FULL_LABELS,
+} from '../../constants/wishlistPriority'
 
 const PRIORITY_CONFIG = {
-  alta:  { label: 'Alta prioridade',  color: '#ef4444', bg: 'rgba(239,68,68,0.18)',  border: 'rgba(239,68,68,0.25)'  },
-  media: { label: 'Média prioridade', color: '#f59e0b', bg: 'rgba(245,158,11,0.18)', border: 'rgba(245,158,11,0.25)' },
-  baixa: { label: 'Baixa prioridade', color: '#10b981', bg: 'rgba(16,185,129,0.18)', border: 'rgba(16,185,129,0.25)' },
+  1: {
+    label: WISHLIST_PRIORITY_FULL_LABELS[1],
+    color: WISHLIST_PRIORITY_COLORS[1],
+    bg: 'rgba(16,185,129,0.18)',
+    border: 'rgba(16,185,129,0.25)',
+  },
+  2: {
+    label: WISHLIST_PRIORITY_FULL_LABELS[2],
+    color: WISHLIST_PRIORITY_COLORS[2],
+    bg: 'rgba(245,158,11,0.18)',
+    border: 'rgba(245,158,11,0.25)',
+  },
+  3: {
+    label: WISHLIST_PRIORITY_FULL_LABELS[3],
+    color: WISHLIST_PRIORITY_COLORS[3],
+    bg: 'rgba(239,68,68,0.18)',
+    border: 'rgba(239,68,68,0.25)',
+  },
+  4: {
+    label: WISHLIST_PRIORITY_FULL_LABELS[4],
+    color: WISHLIST_PRIORITY_COLORS[4],
+    bg: 'rgba(168,85,247,0.18)',
+    border: 'rgba(168,85,247,0.25)',
+  },
 }
 
 export default function WishlistItem() {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const item = getWishlistItem(id)
-  const [purchased, setPurchased] = useState(item?.purchased ?? false)
+  const [item, setItem] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [savingStatus, setSavingStatus] = useState(false)
 
-  // Se não encontrar o item, redireciona para a lista
-  if (!item) {
-    navigate('/wishlist')
-    return null
-  }
+  useEffect(() => {
+    const loadItem = async () => {
+      setLoading(true)
+      setError(null)
 
-  const pri = PRIORITY_CONFIG[item.priority]
+      try {
+        const fetchedItem = await getWishlistItem(id)
+        setItem(fetchedItem)
+      } catch (fetchError) {
+        console.error(fetchError)
+        setError(fetchError.message || 'Não foi possível carregar o item')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadItem()
+  }, [id])
+
+  const itemId = item?._id || item?.id
+  const pri = item ? PRIORITY_CONFIG[item.priority] : null
+  const isBought = item?.status === 'Comprado'
 
   const categoryIcon = (
     <svg viewBox="0 0 24 24" fill="none" strokeWidth="1.8" aria-hidden="true">
@@ -33,15 +76,48 @@ export default function WishlistItem() {
     </svg>
   )
 
-  const handleDelete = () => {
-    deleteWishlistItem(item.id)
-    setShowDeleteModal(false)
-    navigate('/wishlist')
+  const handleDelete = async () => {
+    try {
+      await deleteWishlistItem(itemId)
+      setShowDeleteModal(false)
+      navigate('/wishlist')
+    } catch (deleteError) {
+      console.error(deleteError)
+      alert('Não foi possível excluir o item. Tente novamente.')
+    }
+  }
+
+  const handleToggleStatus = async () => {
+    if (!item) return
+
+    const nextStatus = item.status === 'Quero' ? 'Comprado' : 'Quero'
+    setSavingStatus(true)
+
+    try {
+      const updated = await updateWishlistItem(itemId, { status: nextStatus })
+      setItem(updated)
+    } catch (updateError) {
+      console.error(updateError)
+      alert('Não foi possível atualizar o status. Tente novamente.')
+    } finally {
+      setSavingStatus(false)
+    }
+  }
+
+  if (loading) {
+    return <div className="wi-loading">Carregando item...</div>
+  }
+
+  if (error) {
+    return <div className="wi-error">Erro: {error}</div>
+  }
+
+  if (!item) {
+    return <div className="wi-error">Item não encontrado.</div>
   }
 
   return (
     <div className="wi-root">
-      {/* ── decorações ── */}
       <div className="wi-deco" aria-hidden="true">
         <div className="wi-deco__dot wi-deco__dot--tl" />
         <div className="wi-deco__dot wi-deco__dot--tr" />
@@ -50,7 +126,6 @@ export default function WishlistItem() {
       </div>
 
       <div className="wi-shell">
-        {/* ── header ── */}
         <header className="wi-header">
           <button
             className="wi-header__icon-btn"
@@ -66,18 +141,6 @@ export default function WishlistItem() {
           <h1 className="wi-header__title">{item.name}</h1>
 
           <div className="wi-header__actions">
-            <button
-              className="wi-header__icon-btn"
-              type="button"
-              onClick={() => navigate(`/wishlist-edit/${item.id}`)}
-              aria-label="Editar"
-            >
-              <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" aria-hidden="true">
-                <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
-                <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
-              </svg>
-            </button>
-
             <button
               className="wi-header__icon-btn wi-header__icon-btn--delete"
               type="button"
@@ -95,11 +158,8 @@ export default function WishlistItem() {
         </header>
 
         <div className="wi-body">
-          {/* ── hero card ── */}
           <div className="wi-card wi-hero">
-            <div className="wi-hero__icon">
-              {categoryIcon}
-            </div>
+            <div className="wi-hero__icon">{categoryIcon}</div>
             <h2 className="wi-hero__name">{item.name}</h2>
             <div className="wi-hero__tags">
               <span className="wi-tag wi-tag--cat">{item.category}</span>
@@ -109,36 +169,37 @@ export default function WishlistItem() {
               >
                 {pri.label}
               </span>
+              <span className={`wi-tag wi-tag--status${isBought ? ' wi-tag--status--done' : ''}`}>
+                {item.status}
+              </span>
             </div>
           </div>
 
-          {/* ── preço ── */}
           <div className="wi-card wi-price-card">
             <span className="wi-card__label">Preço</span>
             <span className="wi-price">{formatCurrency(item.price)}</span>
           </div>
 
-          {/* ── status ── */}
           <div className="wi-card wi-status-card">
             <div className="wi-status-left">
               <span className="wi-card__label">Status</span>
-              <span className={`wi-status-text${purchased ? ' wi-status-text--done' : ''}`}>
-                {purchased ? 'Comprado' : 'Pendente'}
+              <span className={`wi-status-text${isBought ? ' wi-status-text--done' : ''}`}>
+                {item.status}
               </span>
             </div>
             <button
-              className={`wi-toggle${purchased ? ' wi-toggle--on' : ''}`}
+              className={`wi-toggle${isBought ? ' wi-toggle--on' : ''}`}
               type="button"
               role="switch"
-              aria-checked={purchased}
-              aria-label="Marcar como comprado"
-              onClick={() => setPurchased((v) => !v)}
+              aria-checked={isBought}
+              aria-label="Alternar status do item"
+              onClick={handleToggleStatus}
+              disabled={savingStatus}
             >
               <span className="wi-toggle__thumb" />
             </button>
           </div>
 
-          {/* ── link ── */}
           {item.link && (
             <div className="wi-card wi-link-card">
               <span className="wi-card__label">Link</span>
@@ -161,7 +222,6 @@ export default function WishlistItem() {
             </div>
           )}
 
-          {/* ── notas ── */}
           {item.notes && (
             <div className="wi-card wi-notes-card">
               <span className="wi-card__label">Notas</span>
@@ -170,22 +230,21 @@ export default function WishlistItem() {
           )}
         </div>
 
-        {/* ── botão principal ── */}
         <div className="wi-footer">
           <button
-            className={`wi-cta${purchased ? ' wi-cta--done' : ''}`}
+            className={`wi-cta${isBought ? ' wi-cta--done' : ''}`}
             type="button"
-            onClick={() => setPurchased((v) => !v)}
+            onClick={handleToggleStatus}
+            disabled={savingStatus}
           >
             <svg viewBox="0 0 24 24" fill="none" strokeWidth="2.5" aria-hidden="true">
               <polyline points="20 6 9 17 4 12" />
             </svg>
-            {purchased ? 'Marcar como pendente' : 'Marcar como comprado'}
+            {isBought ? 'Marcar como quero' : 'Marcar como comprado'}
           </button>
         </div>
       </div>
 
-      {/* ── MODAL DE CONFIRMAÇÃO DE EXCLUSÃO ── */}
       {showDeleteModal && (
         <div className="wi-modal-overlay" onClick={() => setShowDeleteModal(false)}>
           <div className="wi-modal" onClick={(e) => e.stopPropagation()}>

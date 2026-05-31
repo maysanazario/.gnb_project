@@ -1,38 +1,62 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './wishlist.css'
 import BottomNav from '../BottomNav'
-import { MOCK_WISHLIST, formatCurrency } from '../../data/mockData'
+import { formatCurrency } from '../../data/mockData'
+import { getWishlistItems } from '../../services/wishlistService'
+import {
+  WISHLIST_PRIORITY_LABELS,
+  WISHLIST_PRIORITY_COLORS,
+} from '../../constants/wishlistPriority'
 
 export default function WishlistOne() {
   const navigate = useNavigate()
   const [activeFilter, setActiveFilter] = useState('todos')
-  const [items] = useState(MOCK_WISHLIST)
+  const [items, setItems] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    const loadItems = async () => {
+      setLoading(true)
+      setError(null)
+      try {
+        const fetchedItems = await getWishlistItems()
+        setItems(fetchedItems)
+      } catch (fetchError) {
+        console.error(fetchError)
+        setError(fetchError.message || 'Não foi possível carregar a wishlist')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadItems()
+  }, [])
 
   const filters = [
     { id: 'todos', label: 'Todos' },
-    { id: 'alta',  label: 'Alta'  },
-    { id: 'media', label: 'Média' },
-    { id: 'baixa', label: 'Baixa' },
+    { id: '1', label: 'Baixa' },
+    { id: '2', label: 'Média' },
+    { id: '3', label: 'Alta' },
+    { id: '4', label: 'Urgente' },
   ]
 
-  const priorityDotColor = {
-    alta:  '#ef4444',
-    media: '#f59e0b',
-    baixa: '#10b981',
-  }
+  const priorityDotColor = WISHLIST_PRIORITY_COLORS
+  const priorityLabel = WISHLIST_PRIORITY_LABELS
 
-  const priorityLabel = {
-    alta:  'Alta',
-    media: 'Média',
-    baixa: 'Baixa',
-  }
+  const filteredItems = items
+    .filter((item) => activeFilter === 'todos' || String(item.priority) === activeFilter)
+    .sort((a, b) => {
+      const priorityDiff = Number(b.priority) - Number(a.priority)
+      if (priorityDiff !== 0) return priorityDiff
 
-  const filteredItems = items.filter(
-    (item) => activeFilter === 'todos' || item.priority === activeFilter
-  )
+      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0
+      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0
+      return dateB - dateA
+    })
 
-  const totalValue = items.reduce((sum, i) => sum + i.price, 0)
+  const totalValue = items.reduce((sum, i) => sum + (Number(i.price) || 0), 0)
 
   return (
     <div className="wl-root">
@@ -95,65 +119,73 @@ export default function WishlistOne() {
           <span className="wl-summary__label"> no total</span>
         </p>
 
-        {/* ── lista ── */}
-        <ul className="wl-list" role="list">
-          {filteredItems.map((item) => (
-            <li key={item.id}>
-              <button
-                className="wl-card"
-                onClick={() => navigate(`/wishlist-item/${item.id}`)}
-                aria-label={`Ver detalhes de ${item.name}`}
-              >
-                {/* linha do nome */}
-                <div className="wl-card__top">
-                  <div className="wl-card__name-row">
-                    <span
-                      className="wl-card__dot"
-                      style={{ background: priorityDotColor[item.priority] }}
-                    />
-                    <span className="wl-card__name">{item.name}</span>
-                  </div>
-                  <span className="wl-card__dots" aria-hidden="true">···</span>
-                </div>
+        {loading && <div className="wl-status">Carregando itens...</div>}
+        {error && <div className="wl-error">Erro: {error}</div>}
 
-                {/* linha das tags + preço/badge */}
-                <div className="wl-card__bottom">
-                  <div className="wl-card__tags">
-                    <span className="wl-tag wl-tag--cat">{item.category}</span>
-                    <span className={`wl-tag wl-tag--pri wl-tag--${item.priority}`}>
-                      {priorityLabel[item.priority]}
-                    </span>
-                  </div>
+        {!loading && !error && (
+          <ul className="wl-list" role="list">
+            {filteredItems.map((item) => {
+              const itemId = item._id || item.id
+              const statusClass = item.status === 'Comprado' ? ' wl-tag--status-done' : ''
+              const isBought = item.status === 'Comprado'
 
-                  {item.purchased ? (
-                    <span className="wl-card__bought">
-                      <svg viewBox="0 0 24 24" fill="none" strokeWidth="2.5" aria-hidden="true">
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
-                      Comprado!
-                    </span>
-                  ) : (
-                    <span className="wl-card__price">{formatCurrency(item.price)}</span>
-                  )}
-                </div>
+              return (
+                <li key={itemId}>
+                  <button
+                    className="wl-card"
+                    onClick={() => navigate(`/wishlist-item/${itemId}`)}
+                    aria-label={`Ver detalhes de ${item.name}`}
+                  >
+                    <div className="wl-card__top">
+                      <div className="wl-card__name-row">
+                        <span
+                          className="wl-card__dot"
+                          style={{ background: priorityDotColor[item.priority] }}
+                        />
+                        <span className="wl-card__name">{item.name}</span>
+                      </div>
+                      <span className="wl-card__dots" aria-hidden="true">···</span>
+                    </div>
 
-                {/* preço do item comprado fica abaixo do badge */}
-                {item.purchased && (
-                  <div className="wl-card__price-purchased">
-                    {formatCurrency(item.price)}
-                  </div>
-                )}
-              </button>
-            </li>
-          ))}
-        </ul>
+                    <div className="wl-card__bottom">
+                      <div className="wl-card__tags">
+                        <span className="wl-tag wl-tag--cat">{item.category}</span>
+                        <span className={`wl-tag wl-tag--pri wl-tag--pri-${item.priority}`}>
+                          {priorityLabel[item.priority]}
+                        </span>
+                        <span className={`wl-tag wl-tag--status${statusClass}`}>
+                          {item.status}
+                        </span>
+                      </div>
+                      {isBought ? (
+                        <span className="wl-card__bought">
+                          <svg viewBox="0 0 24 24" fill="none" strokeWidth="2.5" aria-hidden="true">
+                            <polyline points="20 6 9 17 4 12" />
+                          </svg>
+                          Comprado
+                        </span>
+                      ) : (
+                        <span className="wl-card__price">{formatCurrency(item.price)}</span>
+                      )}
+                    </div>
 
-        {/* spacer para bottom nav */}
+                    {isBought && (
+                      <div className="wl-card__price-purchased">
+                        {formatCurrency(item.price)}
+                      </div>
+                    )}
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        )}
+
         <div className="wl-spacer" />
       </div>
 
       {/* ── bottom navigation ── */}
-      <BottomNav active="home" />
+      <BottomNav active="wishlist" />
     </div>
   )
 }
