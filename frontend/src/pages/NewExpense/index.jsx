@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import "./newexpense.css";
 
 const categories = [
-  { id: "casa",        icon: "🏠", label: "Casa" },
-  { id: "compras",     icon: "🛍️", label: "Compras" },
-  { id: "alimentacao", icon: "🍔", label: "Alimentação" },
-  { id: "outros",      icon: "✦",  label: "Outros" },
+  { id: "casa",        label: "Casa" },
+  { id: "compras",     label: "Compras" },
+  { id: "alimentacao", label: "Alimentação" },
+  { id: "outros",      label: "Outros" },
 ];
 
 const NewExpense = () => {
@@ -30,7 +30,6 @@ const NewExpense = () => {
 
   const handleSave = () => {
     if (!canSave) return;
-    // aqui você integra com sua lógica de salvar
     navigate("/dashboard");
   };
 
@@ -40,7 +39,9 @@ const NewExpense = () => {
 
       <header className="ne-header">
         <button className="ne-back-btn" onClick={() => navigate(-1)} aria-label="Voltar">
-          ‹
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
         </button>
         <h1 className="ne-title">Nova Despesa</h1>
         <div style={{ width: 40 }} />
@@ -60,17 +61,14 @@ const NewExpense = () => {
 
         <div className="ne-field">
           <label className="ne-label">Preço</label>
-          <div className="ne-price-wrapper">
-            <input
-              className="ne-input ne-input--price"
-              type="text"
-              inputMode="numeric"
-              placeholder="0,00"
-              value={displayPrice}
-              onChange={handlePriceChange}
-            />
-            <span className="ne-currency">R$</span>
-          </div>
+          <input
+            className="ne-input"
+            type="text"
+            inputMode="numeric"
+            placeholder="0,00"
+            value={displayPrice}
+            onChange={handlePriceChange}
+          />
         </div>
 
         <div className="ne-field">
@@ -82,8 +80,7 @@ const NewExpense = () => {
                 className={`ne-cat-btn${category === cat.id ? " ne-cat-btn--active" : ""}`}
                 onClick={() => setCategory(cat.id)}
               >
-                <span className="ne-cat-icon">{cat.icon}</span>
-                <span className="ne-cat-label">{cat.label}</span>
+                {cat.label}
               </button>
             ))}
           </div>
@@ -105,7 +102,11 @@ const NewExpense = () => {
         <button
           className={`ne-save-btn${!canSave ? " ne-save-btn--disabled" : ""}`}
           onClick={handleSave}
+          disabled={!canSave}
         >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
           Salvar Despesa
         </button>
       </div>

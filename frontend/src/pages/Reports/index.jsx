@@ -5,20 +5,26 @@ import "./reports.css";
 const periods = ["Diário", "Mensal", "Anual"];
 
 const weekData = [
-  { day: "Seg.", value: 320, active: true  },
-  { day: "Ter.", value: 180, active: false },
-  { day: "Qua.", value: 240, active: false },
-  { day: "Qui.", value: 150, active: false },
-  { day: "Sex.", value: 200, active: false },
-  { day: "Sab.", value: 130, active: false },
-  { day: "Dom.", value: 100, active: false },
+  { day: "Seg.", value: 320 },
+  { day: "Ter.", value: 180 },
+  { day: "Qua.", value: 240 },
+  { day: "Qui.", value: 150 },
+  { day: "Sex.", value: 200 },
+  { day: "Sab.", value: 130 },
+  { day: "Dom.", value: 100 },
 ];
 
 const categories = [
   { icon: "📺", label: "Assinaturas", value: 44.9  },
   { icon: "🏠", label: "Casa",        value: 890.0 },
-  { icon: "🛍️", label: "Compras",    value: 139.9 },
+  { icon: "🛒", label: "Compras",     value: 139.9 },
 ];
+
+const ChevronRight = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="9 18 15 12 9 6" />
+  </svg>
+);
 
 const Reports = () => {
   const navigate = useNavigate();
@@ -27,7 +33,6 @@ const Reports = () => {
   const [activeBar, setActiveBar] = useState(0);
 
   useEffect(() => {
-    // Dispara animação de entrada
     requestAnimationFrame(() => setMounted(true));
   }, []);
 
@@ -44,13 +49,15 @@ const Reports = () => {
       {/* Header */}
       <header className="rp-header">
         <button className="rp-back-btn" onClick={() => navigate("/dashboard")} aria-label="Voltar">
-          ‹
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
         </button>
         <h1 className="rp-title">Relatórios</h1>
         <div style={{ width: 40 }} />
       </header>
 
-      {/* Filtros de período */}
+      {/* Period tabs */}
       <div className="rp-periods">
         {periods.map((p) => (
           <button
@@ -63,18 +70,14 @@ const Reports = () => {
         ))}
       </div>
 
-      {/* Card do gráfico */}
+      {/* Chart card */}
       <div className={`rp-chart-card${mounted ? " rp-chart-card--in" : ""}`}>
         <span className="rp-chart-label">Total de Despesas</span>
         <h2 className="rp-chart-total">R$ {fmt(total)}</h2>
 
         <div className="rp-bars">
           {weekData.map((d, i) => (
-            <div
-              key={d.day}
-              className="rp-bar-col"
-              onClick={() => setActiveBar(i)}
-            >
+            <div key={d.day} className="rp-bar-col" onClick={() => setActiveBar(i)}>
               <div className="rp-bar-track">
                 <div
                   className={`rp-bar-fill${i === activeBar ? " rp-bar-fill--active" : ""}`}
@@ -89,7 +92,7 @@ const Reports = () => {
         </div>
       </div>
 
-      {/* Gastos por categoria */}
+      {/* Categories */}
       <div className={`rp-section${mounted ? " rp-section--in" : ""}`}>
         <h3 className="rp-section-title">Gastos por categoria</h3>
         <div className="rp-cat-card">
@@ -101,7 +104,7 @@ const Reports = () => {
                   <span className="rp-cat-name">{cat.label}</span>
                   <span className="rp-cat-val">R$ {fmt(cat.value)}</span>
                 </div>
-                <span className="rp-chevron">›</span>
+                <ChevronRight />
               </div>
               {i < categories.length - 1 && <div className="rp-divider" />}
             </React.Fragment>
