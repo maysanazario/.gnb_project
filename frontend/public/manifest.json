@@ -1,0 +1,8 @@
+{
+  "short_name": "GNB",
+  "name": "GNB - Gestão de Finanças",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#0a0914",
+  "background_color": "#0a0914"
+}

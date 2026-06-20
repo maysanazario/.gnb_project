@@ -1,0 +1,260 @@
+/* ─────────────────────────────────────────
+   transactions.css — MOBILE-FIRST
+   Tela de transações/histórico
+   ───────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Container principal ── */
+.tx-root {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #0a0914;
+  min-height: 100dvh;
+  position: relative;
+  overflow-x: hidden;
+  color: #fff;
+}
+
+/* ── Decorações de fundo ── */
+.tx-deco {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.tx-deco__orb {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  top: -100px;
+  right: -80px;
+  border-radius: 50%;
+  background: rgba(109, 40, 217, 0.12);
+  filter: blur(100px);
+}
+
+/* ── Shell ── */
+.tx-shell {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ── Header ── */
+.tx-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 52px 0 24px;
+}
+
+.tx-header__back {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: background 0.15s;
+}
+
+.tx-header__back:hover { background: rgba(255, 255, 255, 0.13); }
+
+.tx-header__back svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+}
+
+.tx-header__title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.3px;
+}
+
+/* ── Resumo ── */
+.tx-summary {
+  background: #141226;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.tx-summary__label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b678e;
+  margin-bottom: 6px;
+}
+
+.tx-summary__value {
+  display: block;
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+/* ── Seção ── */
+.tx-section {
+  margin-bottom: 28px;
+}
+
+.tx-section__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 14px;
+}
+
+/* ── Lista de transações ── */
+.tx-list-card {
+  background: #141226;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 20px;
+  padding: 8px 0;
+  overflow: hidden;
+}
+
+.tx-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  text-align: left;
+  font-family: inherit;
+  position: relative;
+  transition: background 0.15s;
+}
+
+.tx-item:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.tx-item__left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+.tx-item__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(124, 58, 237, 0.12);
+  color: #a78bfa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tx-item__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.tx-item__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.tx-item__name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tx-item__category {
+  font-size: 12px;
+  color: #6b678e;
+}
+
+.tx-item__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.tx-item__amount {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f87171;
+}
+
+.tx-item__arrow {
+  color: #3a3655;
+  display: flex;
+  align-items: center;
+}
+
+.tx-item__arrow svg {
+  width: 18px;
+  height: 18px;
+}
+
+.tx-item-divider {
+  position: absolute;
+  bottom: 0;
+  left: 72px;
+  right: 18px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* spacer */
+.tx-spacer {
+  height: 100px;
+}
+
+/* ─────────────────────────────────────────
+   RESPONSIVO
+   ───────────────────────────────────────── */
+@media (min-width: 640px) {
+  .tx-shell {
+    max-width: 560px;
+    padding: 0 28px;
+  }
+
+  .tx-header {
+    padding-top: 56px;
+  }
+
+  .tx-summary__value {
+    font-size: 30px;
+  }
+}
